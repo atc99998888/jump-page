@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>跳转中…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div>正在跳转，请稍候…</div>
+
+  <script>
+    // 真实跳转地址（加密后的 Base64 内容）
+    const encodedUrl = "aHR0cHM6Ly92bGluay5jYy95eHl6emI="; // 示例加密后地址：https://vlink.cc/yxyzzb
+
+    // 延迟时间（单位：毫秒）
+    const delay = 100;
+
+    // 解密并跳转
+    setTimeout(() => {
+      const targetUrl = atob(encodedUrl);
+      window.location.href = targetUrl;
+    }, delay);
+  </script>
+</body>
+</html>
