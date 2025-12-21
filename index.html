@@ -1,157 +1,355 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>系统维护升级中</title>
-<meta name="description" content="系统维护升级中，请稍后访问">
-<style>
-  :root{
-    --bg:#f6f8fb;
-    --card:#ffffff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --line:#e5e7eb;
-    --primary:#2563eb;
-    --radius:16px;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    min-height:100vh;
-    background: linear-gradient(180deg,#f8fafc,#f6f8fb);
-    font-family: ui-sans-serif, system-ui, -apple-system,
-      "Segoe UI", Roboto, Helvetica, Arial,
-      "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", sans-serif;
-    color:var(--text);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:16px;
-  }
-  .card{
-    width:100%;
-    max-width:420px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    box-shadow:0 10px 30px rgba(15,23,42,.08);
-    padding:22px 20px 20px;
-    text-align:center;
-  }
-  .title{
-    margin:0 0 8px;
-    font-size:18px;
-    font-weight:600;
-    letter-spacing:.2px;
-  }
-  .desc{
-    margin:0 0 18px;
-    font-size:13.5px;
-    color:var(--muted);
-    line-height:1.6;
-  }
-  .restore-time{
-    font-size:13px;
-    color:#334155;
-    margin-bottom:10px;
-  }
-  .countdown{
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-      "Liberation Mono","Courier New", monospace;
-    font-size:20px;
-    font-weight:600;
-    letter-spacing:.5px;
-    padding:14px 10px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:#f8fafc;
-    margin-bottom:14px;
-  }
-  .time-note{
-    font-size:12px;
-    color:var(--muted);
-    margin-bottom:16px;
-  }
-  .btn{
-    border:1px solid #c7d2fe;
-    background:#eef2ff;
-    color:#1e3a8a;
-    padding:10px 14px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:13px;
-  }
-  .btn:hover{background:#e8edff}
-  footer{
-    margin-top:16px;
-    font-size:12px;
-    color:#94a3b8;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>官方入口信息</title>
+  <meta name="description" content="官方入口信息页（合规内容）" />
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#e5e7eb;
+      --soft:#f1f5f9;
+      --primary:#2563eb;
+      --primary2:#1d4ed8;
+      --shadow: 0 10px 30px rgba(15, 23, 42, .06);
+      --radius:14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #f8fafc, #f5f7fb 40%, #f6f8fb);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", sans-serif;
+    }
+    .wrap{
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 18px 16px 96px;
+    }
+
+    .header{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .header-top{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+    .seal{
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1d4ed8, #60a5fa);
+      display:grid; place-items:center;
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.5px;
+      flex:0 0 auto;
+    }
+    .brand h1{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .meta{
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+
+    .grid{
+      margin-top: 12px;
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card-hd{
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      background: #fcfdff;
+    }
+    .card-hd h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .card-bd{ padding: 12px 16px 14px; }
+
+    .item{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      padding: 10px 10px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    .item:last-child{ margin-bottom:0; }
+
+    /* ✅ 只修改这里：网址 / 邮箱字体 */
+    .item code{
+      flex:1 1 auto;
+      min-width:0;
+
+      /* 改为正规系统字体，提升 @ / 字母识别度 */
+      font-family: ui-sans-serif, system-ui, -apple-system,
+                   Segoe UI, Roboto, Helvetica, Arial,
+                   "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", sans-serif;
+
+      font-size: 14.5px;
+      line-height: 1.5;
+      letter-spacing: .2px;
+
+      color: #0b1220;
+      word-break: break-all;
+      padding: 3px 2px;
+    }
+
+    .btn{
+      flex:0 0 auto;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      color:#1e3a8a;
+      padding: 9px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+    }
+    .btn:hover{ background:#e8edff; }
+
+    .dock{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 0;
+      z-index: 9999;
+      background: rgba(255,255,255,.92);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .dock-inner{
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display:flex;
+      justify-content:center;
+    }
+    .dock-btn{
+      border: 0;
+      background: linear-gradient(180deg, var(--primary), var(--primary2));
+      color:#fff;
+      padding: 12px 18px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-size: 13px;
+      font-weight: 600;
+      white-space:nowrap;
+      box-shadow: 0 10px 20px rgba(37,99,235,.18);
+    }
+    .dock-btn:active{ transform: translateY(1px); }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 68px;
+      transform: translateX(-50%);
+      background: rgba(15,23,42,.88);
+      color:#fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events:none;
+      transition: .2s ease;
+      max-width: calc(100% - 28px);
+      z-index: 10000;
+    }
+    .toast.show{ opacity:1; }
+
+    footer{
+      margin-top: 12px;
+      text-align:center;
+      font-size:.83rem;
+      color:#7685a2;
+      line-height:1.6;
+      padding:12px 8px 16px;
+      border-top: 1px solid var(--line);
+      background: transparent;
+    }
+    footer a{color:inherit;text-decoration:none}
+    footer a:hover{text-decoration:underline}
+  </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1 class="title">系统维护升级中</h1>
-    <p class="desc">
-      为提升系统稳定性与质量，正在进行维护升级中。<br>
-      请稍后刷新页面继续访问。
-    </p>
+  <div class="wrap">
+    <section class="header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="seal">OFF</div>
+          <div style="min-width:0">
+            <h1>官方入口信息</h1>
+            <div class="meta" id="today"></div>
+          </div>
+        </div>
+        <div class="meta">仅供入口使用</div>
+      </div>
+    </section>
 
-    <!-- ✅ 新增：明确的恢复时间（年月日 时:分） -->
-    <div class="restore-time" id="restoreText">预计恢复时间：--</div>
-
-    <!-- ✅ 倒计时：包含天数 -->
-    <div class="countdown" id="cd">-- 天 --:--:--</div>
-    <div class="time-note">恢复倒计时</div>
-
-    <button class="btn" onclick="location.reload()">刷新页面</button>
+    <div class="grid" id="grid"></div>
 
     <footer>
-      请使用系统自带浏览器访问
+      © 2025 Greenfield University — 501(c)(3) non-profit (EIN 12-3456789).<br>
+      Registered with the New York State Board of Regents #2025-987654.<br>
+      <a href="#">Privacy Policy</a> • <a href="#">Accessibility</a> • <a href="#">Terms of Use</a>
     </footer>
   </div>
 
-<script>
-  /*
-   * =============================
-   * 只需要改这里（北京时间示例）
-   * =============================
-   */
-  const END_TIME = '2025-12-25T08:30:00+08:00';
+  <div class="dock">
+    <div class="dock-inner">
+      <button class="dock-btn" id="copyAll">一键复制全部保存到记事本</button>
+    </div>
+  </div>
 
-  function pad(n){ return String(n).padStart(2,'0'); }
+  <div class="toast" id="toast"></div>
 
-  function formatTime(dt){
-    return `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())} `
-         + `${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
-  }
+  <script>
+    const DATA = [
+      {
+        title: "最新地址（随时更新）",
+        icon: "🔗",
+        items: ["https://www.55138.xyz"]
+      },
+      {
+        title: "app下载地址（更丝滑）",
+        icon: "⬇️",
+        items: ["https://download-app.example.com/app"]
+      },
+      {
+        title: "永久地址（收藏不失联）",
+        icon: "📌",
+        items: ["https://55138.eth.limo","https://55138.eth.link"]
+      },
+      {
+        title: "发送邮件获取最新地址（最稳）",
+        icon: "✉️",
+        items: ["admin@55138.org"]
+      }
+    ];
 
-  const endDate = new Date(END_TIME);
-  document.getElementById('restoreText').textContent =
-    '预计恢复时间：' + formatTime(endDate);
-
-  function tick(){
-    let diff = endDate.getTime() - Date.now();
-    if(diff < 0) diff = 0;
-
-    const days = Math.floor(diff / 86400000);
-    const hours = Math.floor(diff % 86400000 / 3600000);
-    const mins = Math.floor(diff % 3600000 / 60000);
-    const secs = Math.floor(diff % 60000 / 1000);
-
-    const el = document.getElementById('cd');
-    if(diff === 0){
-      el.textContent = '维护完成';
-    }else{
-      el.textContent =
-        `${days} 天 ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    const toastEl = document.getElementById('toast');
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(window.__toastT);
+      window.__toastT = setTimeout(()=>toastEl.classList.remove('show'), 1800);
     }
-  }
 
-  tick();
-  setInterval(tick, 1000);
-</script>
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast("已复制 ✅ 请到手机自带浏览器打开");
+      }catch(e){
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        toast("已复制 ✅ 请到手机自带浏览器打开");
+      }
+    }
+
+    function render(){
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth()+1).padStart(2,'0');
+      const d = String(now.getDate()).padStart(2,'0');
+      document.getElementById('today').textContent = `更新日期：${y}-${m}-${d}`;
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = "";
+
+      DATA.forEach((sec, idx)=>{
+        const card = document.createElement('section');
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-hd">
+            <h2>${sec.icon} ${sec.title}</h2>
+          </div>
+          <div class="card-bd">
+            ${sec.items.map((u,i)=>`
+              <div class="item">
+                <code id="c_${idx}_${i}">${u}</code>
+                <button class="btn" data-copy="c_${idx}_${i}">复制</button>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('[data-copy]');
+      if(!btn) return;
+      const el = document.getElementById(btn.dataset.copy);
+      if(el) copyText(el.textContent.trim());
+    });
+
+    document.getElementById('copyAll').addEventListener('click', ()=>{
+      const lines = [];
+      DATA.forEach(sec=>{
+        lines.push(`${sec.title}：`);
+        sec.items.forEach(u => lines.push(u));
+        lines.push("");
+      });
+      copyText(lines.join("\n").trim());
+    });
+
+    render();
+  </script>
 </body>
 </html>
