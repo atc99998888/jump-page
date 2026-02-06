@@ -7,66 +7,94 @@
   <meta name="description" content="官方入口信息页（合规内容）" />
   <style>
     :root{
-      --bg:#f6f8fb;
-      --card:#ffffff;
+      --bg:#f3f6fb;
+      --card:rgba(255,255,255,.92);
       --text:#0f172a;
-      --muted:#475569;
-      --line:#e5e7eb;
-      --soft:#f1f5f9;
+      --muted:#5b6b86;
+      --line:rgba(15,23,42,.10);
+      --soft:rgba(15,23,42,.04);
       --primary:#2563eb;
       --primary2:#1d4ed8;
-      --shadow: 0 10px 30px rgba(15, 23, 42, .06);
-      --radius:14px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --shadow: 0 18px 45px rgba(2, 6, 23, .10);
+      --radius:16px;
+
+      /* 网址/邮箱更清晰：用正文系统字体（不是等宽） */
+      --urlfont: ui-sans-serif, system-ui, -apple-system,
+                 "Segoe UI", Roboto, Helvetica, Arial,
+                 "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", sans-serif;
+
+      --sans: ui-sans-serif, system-ui, -apple-system,
+              "Segoe UI", Roboto, Helvetica, Arial,
+              "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", sans-serif;
     }
     *{ box-sizing:border-box; }
     body{
       margin:0;
-      background: linear-gradient(180deg, #f8fafc, #f5f7fb 40%, #f6f8fb);
       color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", sans-serif;
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(37,99,235,.14), transparent 60%),
+        radial-gradient(900px 500px at 85% 20%, rgba(29,78,216,.10), transparent 60%),
+        linear-gradient(180deg, #f7f9ff, var(--bg));
     }
     .wrap{
-      max-width: 860px;
+      max-width: 920px;
       margin: 0 auto;
       padding: 18px 16px 96px;
     }
 
+    /* 顶部 */
     .header{
-      background: var(--card);
+      position:relative;
+      border-radius: calc(var(--radius) + 2px);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.86));
       border: 1px solid var(--line);
-      border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
+    .header::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(800px 240px at 20% 0%, rgba(37,99,235,.22), transparent 60%),
+        radial-gradient(700px 240px at 80% 15%, rgba(16,185,129,.10), transparent 65%);
+      filter: blur(18px);
+      opacity:.9;
+      pointer-events:none;
+    }
     .header-top{
-      padding: 14px 16px;
+      position:relative;
+      padding: 16px 16px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
       border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
     .brand{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
       min-width: 0;
     }
     .seal{
-      width: 38px; height: 38px;
-      border-radius: 10px;
+      width: 44px; height: 44px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #1d4ed8, #60a5fa);
       display:grid; place-items:center;
       color:#fff;
       font-weight:800;
-      letter-spacing:.5px;
+      letter-spacing:.6px;
       flex:0 0 auto;
+      box-shadow: 0 12px 22px rgba(37,99,235,.20);
     }
     .brand h1{
       margin:0;
-      font-size: 16px;
+      font-size: 17px;
       letter-spacing:.2px;
       white-space:nowrap;
       overflow:hidden;
@@ -78,28 +106,52 @@
       white-space:nowrap;
       flex:0 0 auto;
     }
+    .subbar{
+      position:relative;
+      padding: 10px 16px 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.85);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34,197,94,.14);
+    }
 
+    /* 内容 */
     .grid{
-      margin-top: 12px;
+      margin-top: 14px;
       display:grid;
       gap: 12px;
-      grid-template-columns: 1fr;
     }
     .card{
-      background: var(--card);
-      border: 1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: 0 14px 34px rgba(2,6,23,.08);
       overflow:hidden;
     }
     .card-hd{
-      padding: 12px 16px;
+      padding: 13px 16px;
       border-bottom: 1px solid var(--line);
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      background: #fcfdff;
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.85));
     }
     .card-hd h2{
       margin:0;
@@ -107,57 +159,62 @@
       letter-spacing:.2px;
       display:flex;
       align-items:center;
-      gap:8px;
+      gap:10px;
     }
-    .card-bd{ padding: 12px 16px 14px; }
+    .iconBadge{
+      width:28px;height:28px;
+      border-radius: 10px;
+      display:grid;place-items:center;
+      background: rgba(37,99,235,.10);
+      border: 1px solid rgba(37,99,235,.20);
+      color:#1d4ed8;
+      font-size: 14px;
+      flex:0 0 auto;
+    }
+    .card-bd{ padding: 14px 16px 16px; }
 
     .item{
       display:flex;
       gap:10px;
-      align-items:stretch;
-      padding: 10px 10px;
+      align-items:center;
+      padding: 12px 12px;
       border: 1px solid var(--line);
-      background: #ffffff;
-      border-radius: 12px;
+      background: rgba(255,255,255,.92);
+      border-radius: 14px;
       margin-bottom: 10px;
     }
     .item:last-child{ margin-bottom:0; }
 
-    /* ✅ 只修改这里：网址 / 邮箱字体 */
-    .item code{
+    .url{
       flex:1 1 auto;
       min-width:0;
-
-      /* 改为正规系统字体，提升 @ / 字母识别度 */
-      font-family: ui-sans-serif, system-ui, -apple-system,
-                   Segoe UI, Roboto, Helvetica, Arial,
-                   "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", sans-serif;
-
-      font-size: 14.5px;
-      line-height: 1.5;
-      letter-spacing: .2px;
-
-      color: #0b1220;
+      font-family: var(--urlfont);
+      font-size: 15px;
+      line-height: 1.55;
+      letter-spacing: .15px;
+      color:#0b1220;
       word-break: break-all;
-      padding: 3px 2px;
+      padding: 2px 2px;
     }
 
     .btn{
       flex:0 0 auto;
-      border: 1px solid #c7d2fe;
-      background: #eef2ff;
-      color:#1e3a8a;
-      padding: 9px 10px;
-      border-radius: 12px;
+      border: 1px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.10);
+      color:#0b2a4a;
+      padding: 10px 12px;
+      border-radius: 14px;
       cursor:pointer;
       font-size: 13px;
       display:inline-flex;
       align-items:center;
       gap:8px;
       user-select:none;
+      white-space:nowrap;
     }
-    .btn:hover{ background:#e8edff; }
+    .btn:hover{ background: rgba(37,99,235,.14); }
 
+    /* 底部悬浮条 */
     .dock{
       position: fixed;
       left: 0; right: 0;
@@ -169,7 +226,7 @@
       -webkit-backdrop-filter: blur(10px);
     }
     .dock-inner{
-      max-width: 860px;
+      max-width: 920px;
       margin: 0 auto;
       padding: 10px 16px;
       display:flex;
@@ -179,20 +236,21 @@
       border: 0;
       background: linear-gradient(180deg, var(--primary), var(--primary2));
       color:#fff;
-      padding: 12px 18px;
+      padding: 13px 18px;
       border-radius: 14px;
       cursor:pointer;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 650;
       white-space:nowrap;
-      box-shadow: 0 10px 20px rgba(37,99,235,.18);
+      box-shadow: 0 14px 26px rgba(37,99,235,.20);
     }
     .dock-btn:active{ transform: translateY(1px); }
 
+    /* Toast */
     .toast{
       position: fixed;
       left: 50%;
-      bottom: 68px;
+      bottom: 70px;
       transform: translateX(-50%);
       background: rgba(15,23,42,.88);
       color:#fff;
@@ -208,6 +266,7 @@
     }
     .toast.show{ opacity:1; }
 
+    /* footer：保持你原来的行为（不改链接颜色逻辑） */
     footer{
       margin-top: 12px;
       text-align:center;
@@ -236,6 +295,10 @@
         </div>
         <div class="meta">仅供入口使用</div>
       </div>
+      <div class="subbar">
+        <div class="pill"><span class="dot"></span> 入口实时更新</div>
+        <div class="meta">建议使用系统自带浏览器打开</div>
+      </div>
     </section>
 
     <div class="grid" id="grid"></div>
@@ -258,14 +321,14 @@
   <script>
     const DATA = [
       {
-        title: "最新地址（随时更新）<br>👇复制这个链接用自带浏览器打开→进站",
+        title: "最新入口↓用这个进入（随时更新）",
         icon: "🔗",
         items: ["https://dfsgdd.akjh-cdn.55138w.baby"]
       },
       {
         title: "app下载地址（更丝滑）",
         icon: "⬇️",
-        items: ["APP升级维护中……"]
+        items: ["升级维护中……"]
       },
       {
         title: "永久地址（收藏不失联）",
@@ -302,6 +365,16 @@
       }
     }
 
+    // ✅ 关键修复：避免链接里出现 & < " 等字符导致 innerHTML 结构被破坏（手机端常见“闪一下就消失”）
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
     function render(){
       const now = new Date();
       const y = now.getFullYear();
@@ -317,12 +390,12 @@
         card.className = "card";
         card.innerHTML = `
           <div class="card-hd">
-            <h2>${sec.icon} ${sec.title}</h2>
+            <h2><span class="iconBadge">${escapeHtml(sec.icon)}</span>${escapeHtml(sec.title)}</h2>
           </div>
           <div class="card-bd">
             ${sec.items.map((u,i)=>`
               <div class="item">
-                <code id="c_${idx}_${i}">${u}</code>
+                <div class="url" id="c_${idx}_${i}">${escapeHtml(u)}</div>
                 <button class="btn" data-copy="c_${idx}_${i}">复制</button>
               </div>
             `).join("")}
@@ -335,8 +408,12 @@
     document.addEventListener('click', (e)=>{
       const btn = e.target.closest('[data-copy]');
       if(!btn) return;
-      const el = document.getElementById(btn.dataset.copy);
-      if(el) copyText(el.textContent.trim());
+      const id = btn.getAttribute('data-copy');
+      const el = document.getElementById(id);
+      if(!el) return;
+      const val = (el.textContent || "").trim();
+      if (!val) return;
+      copyText(val);
     });
 
     document.getElementById('copyAll').addEventListener('click', ()=>{
@@ -347,6 +424,7 @@
         lines.push("");
       });
       copyText(lines.join("\n").trim());
+      toast("已复制全部地址 ✅ 请到手机自带浏览器打开");
     });
 
     render();
